@@ -203,7 +203,7 @@ form input.darker-input:hover {
     letter-spacing: 0.20rem;
     margin-top: 50px;
     margin-bottom: 20px;
-    max-width: 62%;
+    max-width: auto;
 }
 
 @keyframes animated-text {
