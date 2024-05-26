@@ -196,7 +196,7 @@ form input.darker-input:hover {
 
 /* Title Animation */
 #title {
-    animation: animated-text 2s steps(11, end) 0.5s 1 normal both, animated-cursor 750ms steps(11, end) infinite;
+    animation: animated-text 2s steps(18, end) 0.5s 1 normal both, animated-cursor 750ms steps(11, end) infinite;
     border-right: solid 3px rgba(0, 0, 0, 0.75);
     white-space: pre;
     overflow: hidden;
