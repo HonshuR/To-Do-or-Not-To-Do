@@ -1,0 +1,553 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Work Sans', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    transition: 0.3s linear;
+}
+
+/* Button Themes */
+button.standard-button {
+    background-color: rgb(247, 226, 223);
+    color: rgb(0, 0, 0);
+}
+
+button.standard-button:hover {
+    background-color: white;
+    box-shadow: #fff8 0 0 10px;
+}
+
+button.light-button {
+    background-color: white;
+    color: #1a150e;
+}
+
+button.light-button:hover {
+    background-color: #f0f0f0;
+}
+
+button.darker-button {
+    background-color: #002837;
+    color: white;
+}
+
+button.darker-button:hover {
+    background-color: #001f29;
+}
+
+/* Themes */
+.standard {
+    background-image: linear-gradient(100deg, #575656, #062e3f);
+    color: #ffdfdb;
+    transition: 0.3s linear;
+    overflow: hidden;
+}
+
+.light {
+    background-image: linear-gradient(100deg, #d4f1ff, #ffffff);
+    color: #1a150e;
+    transition: 0.3s linear;
+}
+
+.darker {
+    background-image: linear-gradient(100deg, #001214, #001f29);
+    color: white;
+    transition: 0.3s linear;
+}
+
+/* Header Styles */
+#header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 3rem;
+    width: 100%;
+    padding-top: 2rem;
+    position: relative;
+}
+
+#datetime {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1rem;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    font-size: 1.7rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+form input {
+    padding: 10px;
+    font-size: 17px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    max-width: 500px;
+    transition: background-color 200ms ease-in-out;
+    width: 100%;
+}
+
+form button {
+    padding: 10px;
+    font-size: 17px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    transition: background-color 200ms ease-in-out;
+    margin: 5px;
+    width: 10%;
+}
+
+form input:hover, form button:hover {
+    cursor: text;
+}
+
+/* Input Themes */
+form input.standard-input {
+    background-color: #181a1a;
+    color: rgb(247, 226, 223);
+}
+
+form input.light-input {
+    background-color: #AEB1B4;
+    color: #1a150e;
+}
+
+form input.light-input::placeholder {
+    color: #1a150e;
+    opacity: 0.7;
+}
+
+form input.darker-input {
+    background-color: #01394c;
+    color: white;
+}
+
+form input.darker-input::placeholder {
+    color: white;
+    opacity: 0.7;
+}
+
+form input.standard-input:hover {
+    background-color: rgb(0, 0, 0);
+}
+
+form input.light-input:hover {
+    background-color: #919699;
+}
+
+form input.darker-input:hover {
+    background-color: #013141;
+}
+
+/* Theme Buttons */
+.flexrow-container {
+    align-items: center;
+    align-self: flex-end;
+    display: flex;
+    justify-content: space-around;
+    margin-right: 3%;
+}
+
+.theme-selector {
+    border: 1px solid #d1dae3;
+    border-radius: 100%;
+    height: 35px;
+    margin: 0 8px;
+    width: 35px;
+    transition: transform 150ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+
+.theme-selector:hover {
+    box-shadow: white 0 0 8px;
+    cursor: pointer;
+}
+
+.theme-selector:active {
+    transform: scale(0.95);
+}
+.standard-theme {
+    background-image: linear-gradient(100deg, #575656, #062e3f);
+}
+
+.light-theme {
+    background-image: linear-gradient(100deg, #d4f1ff, #ffffff);
+}
+
+.darker-theme {
+    background-image: linear-gradient(100deg, #001214, #001f29);
+}
+
+/* Title Animation */
+#title {
+    animation: animated-text 2s steps(11, end) 0.5s 1 normal both, animated-cursor 750ms steps(11, end) infinite;
+    border-right: solid 3px rgba(0, 0, 0, 0.75);
+    white-space: pre;
+    overflow: hidden;
+    letter-spacing: 0.20rem;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    max-width: 62%;
+}
+
+@keyframes animated-text {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 1000px;
+    }
+}
+
+@keyframes animated-cursor {
+    from {
+        border-right-color: rgba(0, 0, 0, 0.75);
+    }
+    to {
+        border-right-color: transparent;
+    }
+}
+
+@keyframes darker-animated-cursor {
+    from {
+        border-right-color: #01394c;
+    }
+    to {
+        border-right-color: transparent;
+    }
+}
+
+#title.darker-title {
+    animation: animated-text 2s steps(11, end) 0.5s 1 normal both, darker-animated-cursor 750ms steps(11, end) infinite;
+}
+
+/* Buttons */
+button {
+    border: none;
+    outline: none;
+    transition: box-shadow 200ms ease, background-color 200ms ease-in-out;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+/* List Styles */
+#myUnOrdList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.todo-list {
+    width: 60%;
+    max-width: 1000px;
+    height: 45vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 1rem auto;
+    padding: 0 20px;
+    list-style: none;
+}
+
+.todo, .subtask-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #34495e;
+    color: white;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.todo:hover, .subtask-item:hover {
+    background-color: #2c3e50;
+}
+
+/* Items Themes */
+.standard-todo {
+    background-color: rgb(26, 27, 27);
+}
+
+.light-todo {
+    background-color: #AEB1B4;
+}
+
+.darker-todo {
+    background-color: #01394c;
+}
+
+.todo li, .subtask-item li {
+    padding: 7px;
+    font-size: 20px;
+    flex: 1;
+    border-radius: 30px;
+    overflow-wrap: break-word;
+    flex-basis: auto;
+}
+
+.todo-item, .subtask-item li {
+    padding: 0rem 0.5rem;
+    white-space: normal;
+}
+
+/* Buttons */
+.check-btn, .delete-btn,  .dropdown-btn,  .subtask-check-btn, .subtask-delete-btn {
+    margin-left: 7.5px;
+    margin-right: 7.5px;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.add-subtask-btn, .edit-due-date-btn,.notes-btn, .edit-btn{
+    margin-left: 7.5px;
+    margin-right: 7.5px;
+    min-width: 30px;
+    height: 30px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.check-btn:hover, .delete-btn:hover, .notes-btn:hover, .edit-btn:hover, .edit-due-date-btn:hover, .subtask-check-btn:hover, .subtask-delete-btn:hover {
+    background-color: #1abc9c;
+}
+
+.fa {
+    font-size: 20px;
+}
+
+.fa-trash, .fa-check, .fa-pencil-alt {
+    font-size: 20px;
+    pointer-events: none;
+}
+
+.completed {
+    transition: 0.2s;
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.fall {
+    transition: 0.5s;
+    transform: translateY(45rem) rotateZ(45deg);
+    opacity: 0;
+}
+
+/* Due Date Styles */
+.due-date {
+    margin-right: auto;
+    white-space: nowrap;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.modal-content textarea {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive Design Adjustments */
+@media only screen and (max-width: 1000px) {
+    .flexrow-container {
+        align-self: center;
+        margin: 0;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    #header {
+        font-size: 2rem;
+    }
+
+    form input[type="text"], form button {
+        width: 80%;
+        border-radius: 15px;
+        margin-top: 5px;
+    }
+}
+
+@media only screen and (max-width: 00px) {
+    #header {
+        font-size: 1.5rem;
+    }
+
+    form {
+        flex-direction: column;
+    }
+}
+
+/* Accessible focus styles */
+button:focus, input:focus {
+    outline: 3px solid #0066cc;
+    outline-offset: 2px;
+}
+
+.notepad {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: none;
+}
+
+/* Sort button and dropdown */
+#sort-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.sort-btn, .sort-options {
+    padding: 10px 20px;
+    font-size: 17px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffdfdb;
+    color: #062e3f;
+    cursor: pointer;
+    transition: background-color 200ms ease-in-out, box-shadow 200ms ease;
+    margin-right: 10px;
+}
+
+.sort-btn:hover, .sort-options:hover {
+    background-color: white;
+    box-shadow: #fff8 0 0 10px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 5px 0;
+    width: auto;
+    transition: top 0.3s ease, left 0.3s ease;
+}
+
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-menu button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: none;
+    text-align: center;
+    color: inherit;
+    cursor: pointer;
+}
+
+.dropdown-menu button i {
+    font-size: 20px;
+    margin: 0;
+    padding: 5px;
+}
+.standard-dropdown-menu button, .darker-dropdown-menu button{ 
+    color: white;
+}
+.light-dropdown-menu button{ 
+    color: black;
+}
+.dropdown-menu button:hover {
+    background-color: #ddd;
+}
+
+/* Dropdown Themes */
+.standard-dropdown-menu {
+    background-color: #262626;
+}
+
+.light-dropdown-menu {
+    background-color: #f1f1f1;
+}
+
+.darker-dropdown-menu {
+    background-color: #333333;
+}
