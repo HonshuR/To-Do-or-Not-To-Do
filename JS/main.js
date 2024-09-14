@@ -1,34 +1,46 @@
 // Selectors
-const toDoInput = document.querySelector('.todo-input');
-const dueDateInput = document.querySelector('.due-date-input');
-const toDoBtn = document.querySelector('.todo-btn');
-const toDoList = document.querySelector('.todo-list');
-const sortOptions = document.querySelector('#sort-options');
-const standardTheme = document.querySelector('.standard-theme');
-const lightTheme = document.querySelector('.light-theme');
-const darkerTheme = document.querySelector('.darker-theme');
-const modal = document.querySelector('#myModal');
-const modalContent = document.querySelector('.modal-content');
-const closeBtn = document.querySelector('.close');
-const notesTextarea = document.querySelector('.modal-content textarea');
-let activeNoteTask = null;
+const toDoInput = document.querySelector('.todo-input'); // Input field for the to-do task
+const dueDateInput = document.querySelector('.due-date-input'); // Input field for the due date of the to-do task
+const toDoBtn = document.querySelector('.todo-btn'); // Button to add a new to-do task
+const toDoList = document.querySelector('.todo-list'); // Container for the list of to-do tasks
+const sortOptions = document.querySelector('#sort-options'); // Dropdown for sorting tasks
+const standardTheme = document.querySelector('.standard-theme'); // Button to switch to standard theme
+const lightTheme = document.querySelector('.light-theme'); // Button to switch to light theme
+const darkerTheme = document.querySelector('.darker-theme'); // Button to switch to darker theme
+const modal = document.querySelector('#myModal'); // Modal for displaying additional task details
+const modalContent = document.querySelector('.modal-content'); // Content within the modal
+const closeBtns = document.querySelectorAll('.close'); // Buttons to close modals
+const notesTextarea = document.querySelector('.modal-content textarea'); // Textarea for task notes
+const settingsBtn = document.querySelector('#settings-btn'); // Button to open settings modal
+const settingsModal = document.querySelector('#settingsModal'); // Modal for settings
+const saveSettingsBtn = document.querySelector('#saveSettingsBtn'); // Button to save settings
+const phoneNumberInput = document.querySelector('#phoneNumber'); // Input field for phone number in settings
+const smsOptInCheckbox = document.querySelector('#smsOptIn'); // Checkbox to opt-in for SMS notifications
+let activeNoteTask = null; // Currently active task for notes
 
-document.addEventListener("DOMContentLoaded", function() {
+// Event listeners for settings
+settingsBtn.addEventListener('click', openSettingsModal);
+saveSettingsBtn.addEventListener('click', saveSettings);
+closeBtns.forEach(closeBtn => closeBtn.addEventListener('click', closeModal));
+window.addEventListener('click', outsideClick);
+
+// Event listeners for initial setup and UI interactions
+document.addEventListener('DOMContentLoaded', () => {
     toDoBtn.addEventListener('click', addToDo);
     toDoList.addEventListener('click', handleItemClick);
     sortOptions.addEventListener('change', () => sortTasks(sortOptions.value));
     standardTheme.addEventListener('click', () => changeTheme('standard'));
     lightTheme.addEventListener('click', () => changeTheme('light'));
     darkerTheme.addEventListener('click', () => changeTheme('darker'));
-    closeBtn.addEventListener('click', closeModal);
-    window.addEventListener('click', outsideClick);
     getTodos();
     document.addEventListener('click', closeDropdowns);
+    loadSettings();
 });
 
-let savedTheme = localStorage.getItem('savedTheme') || 'standard';
-changeTheme(savedTheme);
+let savedTheme = localStorage.getItem('savedTheme') || 'standard'; // Load saved theme or default to standard
+changeTheme(savedTheme); // Apply the saved theme
 
+// Create a button element with given HTML and class
 function createButton(innerHTML, className) {
     const button = document.createElement('button');
     button.innerHTML = innerHTML;
@@ -36,14 +48,17 @@ function createButton(innerHTML, className) {
     return button;
 }
 
+// Validate input for non-empty, non-whitespace
 function isInputValid(input) {
     return input && input.trim().length > 0;
 }
 
+// Get index of task in the todo list by its text
 function getTaskIndex(todos, taskText) {
     return todos.findIndex(todo => todo.task === taskText);
 }
 
+// Add a new to-do task
 function addToDo(event) {
     event.preventDefault();
     console.log("Add to-do button clicked");
@@ -64,8 +79,26 @@ function addToDo(event) {
     toDoList.appendChild(toDoDiv);
     toDoInput.value = '';
     dueDateInput.value = '';
+
+    // Check if the user opted in for SMS notifications
+    const smsOptIn = localStorage.getItem('smsOptIn') === 'true';
+    if (smsOptIn) {
+        const userPhoneNumber = localStorage.getItem('phoneNumber');
+        if (userPhoneNumber) {
+            const taskDueDate = new Date(dueDateValue);
+            const currentDate = new Date();
+            const timeDifference = taskDueDate.getTime() - currentDate.getTime();
+            const messageBody = `Reminder: You have a task due today: ${toDoInput.value}`;
+
+            // Schedule the SMS to be sent on the due date
+            setTimeout(() => {
+                sendSMSNotification(userPhoneNumber, messageBody);
+            }, timeDifference);
+        }
+    }
 }
 
+// Handle item clicks (delete, check, notes, edit, subtask, etc.)
 function handleItemClick(event) {
     const item = event.target;
     const parentDiv = item.closest('.todo');
@@ -143,6 +176,7 @@ function handleItemClick(event) {
     }
 }
 
+// Update the dropdown menu position
 function updateDropdownPosition(button, dropdownMenu) {
     const buttonRect = button.getBoundingClientRect();
     dropdownMenu.style.top = `${buttonRect.bottom}px`;
@@ -150,7 +184,7 @@ function updateDropdownPosition(button, dropdownMenu) {
     dropdownMenu.style.transform = `translateY(${window.scrollY}px)`;
 }
 
-
+// Close dropdowns if click outside
 function closeDropdowns(event) {
     if (!event.target.classList.contains('dropdown-btn')) {
         document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -161,6 +195,7 @@ function closeDropdowns(event) {
     }
 }
 
+// Close other dropdown menus except the current one
 function closeOtherDropdowns(currentDropdown) {
     document.querySelectorAll('.dropdown-menu').forEach(menu => {
         if (menu !== currentDropdown && menu.classList.contains('show')) {
@@ -169,6 +204,7 @@ function closeOtherDropdowns(currentDropdown) {
     });
 }
 
+// Close a specific dropdown menu
 function closeDropdown(taskDiv) {
     const dropdownMenu = taskDiv.querySelector('.dropdown-menu');
     if (dropdownMenu && dropdownMenu.classList.contains('show')) {
@@ -176,6 +212,7 @@ function closeDropdown(taskDiv) {
     }
 }
 
+// Save a new task to local storage
 function saveToLocalStorage(taskText, completed = false, dueDate = null, notes = '') {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     todos.push({ task: taskText, completed, dueDate, notes, subtasks: [] });
@@ -183,6 +220,7 @@ function saveToLocalStorage(taskText, completed = false, dueDate = null, notes =
     console.log('Saved to local storage:', todos);
 }
 
+// Update task completion status and notes in local storage
 function updateTaskInLocalStorage(taskDiv) {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     const taskText = taskDiv.querySelector('.todo-item').innerText;
@@ -197,6 +235,7 @@ function updateTaskInLocalStorage(taskDiv) {
     }
 }
 
+// Remove a task from local storage
 function removeFromLocalStorage(todo) {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     const taskText = todo.querySelector('.todo-item').innerText;
@@ -205,12 +244,14 @@ function removeFromLocalStorage(todo) {
     console.log('Removed from local storage:', todos);
 }
 
+// Load tasks from local storage and render them
 function getTodos() {
     const todos = JSON.parse(localStorage.getItem('todos')) || [];
     console.log('Loaded todos from local storage:', todos);
     renderTasks(todos);
 }
 
+// Render tasks on the UI based on sorting options
 function renderTasks(todos) {
     toDoList.innerHTML = ''; // Clear the list before rendering
 
@@ -245,6 +286,7 @@ function renderTasks(todos) {
     });
 }
 
+// Save notes to local storage for a specific task
 function saveNotesToLocalStorage(taskText, notes) {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     const index = getTaskIndex(todos, taskText);
@@ -255,6 +297,7 @@ function saveNotesToLocalStorage(taskText, notes) {
     }
 }
 
+// Create and return a task element
 function createTaskElement(taskText, completed, dueDate, notes = '') {
     const toDoDiv = document.createElement("div");
     toDoDiv.classList.add('todo', `${savedTheme}-todo`);
@@ -304,6 +347,7 @@ function createTaskElement(taskText, completed, dueDate, notes = '') {
     return toDoDiv;
 }
 
+// Change the theme and apply to all relevant elements
 function changeTheme(color) {
     localStorage.setItem('savedTheme', color);
     savedTheme = localStorage.getItem('savedTheme');
@@ -334,27 +378,37 @@ function changeTheme(color) {
     document.querySelectorAll('.dropdown-menu').forEach(menu => {
         menu.className = `dropdown-menu ${color}-dropdown-menu`;
     });
+    document.querySelectorAll('.subtask-item').forEach(subtask => {
+        subtask.className = `subtask-item ${color}-todo ${subtask.classList.contains('completed') ? 'completed' : ''}`;
+    });
 }
 
+// Open the modal
 function openModal() {
     modal.style.display = 'flex';
 }
 
-function closeModal() {
-    if (activeNoteTask) {
+// Close the modal and save notes if applicable
+function closeModal(event) {
+    const modalToClose = event.target.closest('.modal');
+    if (modalToClose) {
+        modalToClose.style.display = 'none';
+    }
+    if (activeNoteTask && modalToClose === modal) {
         const notes = notesTextarea.value;
         saveNotesToLocalStorage(activeNoteTask.querySelector('.todo-item').innerText, notes);
         activeNoteTask = null;
     }
-    modal.style.display = 'none';
 }
 
+// Close modal if click outside of it
 function outsideClick(event) {
-    if (event.target == modal) {
-        closeModal();
+    if (event.target === modal || event.target === settingsModal) {
+        event.target.style.display = 'none';
     }
 }
 
+// Edit task name
 function editTask(taskDiv) {
     const taskTextElem = taskDiv.querySelector('.todo-item');
     const currentText = taskTextElem.innerText;
@@ -368,6 +422,7 @@ function editTask(taskDiv) {
     updateTaskTextInLocalStorage(currentText, newTaskText);
 }
 
+// Update task name in local storage
 function updateTaskTextInLocalStorage(oldText, newText) {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     const taskIndex = getTaskIndex(todos, oldText);
@@ -378,6 +433,7 @@ function updateTaskTextInLocalStorage(oldText, newText) {
     }
 }
 
+// Edit due date of the task
 function editDueDate(taskDiv) {
     const dueDateElem = taskDiv.querySelector('.due-date');
     const currentDueDate = dueDateElem.innerText.split(': ')[1];
@@ -391,6 +447,7 @@ function editDueDate(taskDiv) {
     updateDueDateInLocalStorage(taskDiv.querySelector('.todo-item').innerText, newDueDate);
 }
 
+// Update due date in local storage
 function updateDueDateInLocalStorage(taskText, newDueDate) {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     const taskIndex = getTaskIndex(todos, taskText);
@@ -401,8 +458,9 @@ function updateDueDateInLocalStorage(taskText, newDueDate) {
     }
 }
 
+// Add a subtask to a task
 function addSubTask(taskDiv) {
-    const subTaskText = prompt("Enter your subtask:");
+    const subTaskText = prompt("Enter your sub-task:");
     if (subTaskText === null || subTaskText.trim() === "") {
         return;
     }
@@ -421,6 +479,7 @@ function addSubTask(taskDiv) {
     }
 }
 
+// Render subtasks within a task
 function renderSubTasks(taskDiv, subtasks) {
     let subTaskContainer = taskDiv.querySelector('.subtask-container');
     if (!subTaskContainer) {
@@ -455,6 +514,7 @@ function renderSubTasks(taskDiv, subtasks) {
     });
 }
 
+// Update subtask completion status in local storage
 function updateSubTaskInLocalStorage(taskText, subTaskText, completed) {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     const taskIndex = getTaskIndex(todos, taskText);
@@ -469,6 +529,7 @@ function updateSubTaskInLocalStorage(taskText, subTaskText, completed) {
     }
 }
 
+// Remove subtask from local storage
 function removeSubTaskFromLocalStorage(taskText, subTaskText) {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     const taskIndex = getTaskIndex(todos, taskText);
@@ -480,7 +541,51 @@ function removeSubTaskFromLocalStorage(taskText, subTaskText) {
     }
 }
 
+// Sort tasks based on selected option and re-render them
 function sortTasks(sortOption) {
     const todos = JSON.parse(localStorage.getItem('todos')) || [];
     renderTasks(todos);
+}
+
+// Open settings modal
+function openSettingsModal() {
+    settingsModal.style.display = 'flex';
+}
+
+// Save settings (phone number and SMS opt-in) to local storage
+function saveSettings() {
+    const phoneNumber = phoneNumberInput.value;
+    const smsOptIn = smsOptInCheckbox.checked;
+
+    localStorage.setItem('phoneNumber', phoneNumber);
+    localStorage.setItem('smsOptIn', smsOptIn);
+
+    alert('Settings saved!');
+    settingsModal.style.display = 'none';
+}
+
+// Load settings from local storage and apply them
+function loadSettings() {
+    const phoneNumber = localStorage.getItem('phoneNumber') || '';
+    const smsOptIn = localStorage.getItem('smsOptIn') === 'true';
+
+    phoneNumberInput.value = phoneNumber;
+    smsOptInCheckbox.checked = smsOptIn;
+}
+
+// Send SMS notification using a server endpoint
+function sendSMSNotification(toNumber, messageBody) {
+    fetch('/send-sms', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            to: toNumber,
+            body: messageBody
+        })
+    })
+    .then(response => response.text())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
 }
