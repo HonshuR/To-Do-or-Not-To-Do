@@ -196,14 +196,14 @@ form input.darker-input:hover {
 
 /* Title Animation */
 #title {
-    animation: animated-text 2s steps(18, end) 0.5s 1 normal both, animated-cursor 750ms steps(11, end) infinite;
+    animation: animated-text 2s steps(18, end) 0.5s 1 normal both, animated-cursor 750ms steps(18, end) infinite;
     border-right: solid 3px rgba(0, 0, 0, 0.75);
     white-space: pre;
     overflow: hidden;
     letter-spacing: 0.20rem;
     margin-top: 50px;
     margin-bottom: 20px;
-    max-width: auto;
+    max-width:fit-content;
 }
 
 @keyframes animated-text {
@@ -260,7 +260,7 @@ button:hover {
     width: 60%;
     max-width: 1000px;
     height: 45vh;
-    overflow-y: auto;
+    overflow-y:auto;
     overflow-x: hidden;
     margin: 1rem auto;
     padding: 0 20px;
@@ -278,6 +278,7 @@ button:hover {
     border-radius: 8px;
     width: 100%;
     flex-wrap: nowrap;
+    
 }
 
 .todo:hover, .subtask-item:hover {
@@ -493,7 +494,7 @@ button:focus, input:focus {
 /* Dropdown menu */
 .dropdown-menu {
     display: none;
-    position: fixed;
+    position:fixed  ;
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
@@ -550,4 +551,53 @@ button:focus, input:focus {
 
 .darker-dropdown-menu {
     background-color: #333333;
+}
+
+/* Settings button */
+.settings-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 150ms ease-in-out, box-shadow 200ms ease-in-out;
+    
+}
+
+.settings-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Settings Modal */
+#settingsModal .modal-content {
+    width: 300px;
+    padding: 20px;
+}
+
+#settingsModal label {
+    display: block;
+    margin-top: 10px;
+}
+
+#settingsModal input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#settingsModal button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #062e3f;
+    color: white;
+    cursor: pointer;
+    transition: background-color 200ms ease-in-out;
+}
+
+#settingsModal button:hover {
+    background-color: #041f2b;
 }
