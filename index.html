@@ -17,6 +17,7 @@
             <div class="standard-theme theme-selector"></div>
             <div class="light-theme theme-selector"></div>
             <div class="darker-theme theme-selector"></div>
+            <button id="settings-btn" class="settings-btn"><i class="fas fa-cog"></i></button>
         </div>
         <div id="datetime"></div>
         <h1 id="title">To Do or Not To Do<div id="border"></div></h1>
@@ -49,6 +50,19 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <textarea placeholder="Enter notes here..."></textarea>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Notification Settings</h2>
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" placeholder="Enter your phone number">
+            <label>
+                <input type="checkbox" id="smsOptIn"> Receive SMS notifications
+            </label>
+            <button id="saveSettingsBtn">Save Settings</button>
         </div>
     </div>
 
